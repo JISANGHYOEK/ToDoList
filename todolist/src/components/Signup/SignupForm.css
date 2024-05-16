@@ -1,0 +1,30 @@
+.input-form {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  width: calc(100% - 30px);
+}
+
+.input-form:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+button {
+  padding: 10px 15px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #357abd;
+}
+
+.text1 {
+  margin-top: 20px;
+  text-align: center;
+}
