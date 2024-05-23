@@ -140,8 +140,12 @@ const SignupForm = () => {
         />
       </div>
       <button type="submit">가입하기</button>
-      <div className="text1">
-        계정을 만들고 사용 약관 및<br /> 개인 정보 보호 정책에 동의합니다.
+      <div class="agree">
+        <div className="text1">
+          계정을 만들고 사용 약관 및 개인
+          <br /> 정보 보호 정책에 동의합니다.
+          <input type="checkbox"></input>
+        </div>
       </div>
     </form>
   );
