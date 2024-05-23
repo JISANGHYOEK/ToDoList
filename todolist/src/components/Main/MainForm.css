@@ -1,21 +1,28 @@
-.AA {
-  width: 256px;
-}
-
-.Sinput-form {
-  padding: 10px;
+.Minput-form {
+  padding: 10px 15px;
   margin: 5px 0;
   border: 1px solid #ccc;
   border-radius: 12px;
   width: calc(100% - 30px);
 }
 
-.Sinput-form:focus {
+.Minput-form:focus {
   border-color: #4a90e2;
   outline: none;
 }
-button {
-  width: 250px;
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.signup-button {
+  width: 100%;
   padding: 10px;
   background-color: #4a90e2;
   color: white;
@@ -27,15 +34,4 @@ button {
 
 button:hover {
   background-color: #357abd;
-}
-
-.text1 {
-  margin-top: 20px;
-  text-align: left;
-  font-weight: 20pt;
-}
-
-.agree {
-  margin-top: 10px;
-  margin-bottom: 10px;
 }

@@ -4,7 +4,7 @@ body {
   margin: 0;
 }
 
-.SignupPageContainer {
+.MainPageContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,8 @@ body {
 
 /* 화면 너비가 768px 이하일 때 적용될 스타일 */
 @media (max-width: 768px) {
-  .SignupPageContainer {
+  .MainPageContainer {
     flex-direction: column;
+    height: 50%;
   }
 }

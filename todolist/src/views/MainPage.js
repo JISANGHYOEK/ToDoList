@@ -1,16 +1,10 @@
-import Main from "../components/MainPage/Main";
+import React from "react";
+import Main from "../components/Main/Main";
+import "./MainPage.css"; // CSS 파일 임포트
 
 const MainPage = () => {
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        height: "100vh",
-        position: "relative",
-        backgroundColor: "#BEECFF",
-      }}
-    >
+    <div className="MainPageContainer">
       <Main />
     </div>
   );

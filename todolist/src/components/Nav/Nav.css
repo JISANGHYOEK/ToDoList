@@ -1,0 +1,35 @@
+.navbar {
+  background-color: #beecff; /* 네비게이션 바의 배경 색상 */
+  overflow: hidden; /* 내용이 너무 많으면 숨김 */
+  display: flex; /* 항목들을 일렬로 배치 */
+  justify-content: space-around; /* 항목들 사이의 공간을 균등하게 분배 */
+  align-items: center; /* 항목들을 세로 방향으로 가운데 정렬 */
+  height: 60px; /* 네비게이션 바의 높이 */
+  position: fixed; /* 네비게이션 바를 고정 */
+  top: 0; /* 상단에서부터의 위치 */
+  left: 0; /* 왼쪽에서부터의 위치 */
+  width: 100%; /* 너비를 화면 전체로 설정 */
+  z-index: 1000; /* 다른 요소들 위에 표시되도록 z-index 설정 */
+}
+
+.navbar a {
+  color: rgb(0, 0, 0); /* 링크의 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+  font-size: 16px; /* 폰트 크기 */
+  padding: 14px 20px; /* 상하 좌우 패딩 */
+  border-radius: 5px; /* 링크 모서리 둥글게 */
+}
+
+.navbar a:hover {
+  background-color: #ffffff; /* 마우스 오버 시 배경 색상 변경 */
+  color: black; /* 마우스 오버 시 글자 색상 변경 */
+}
+
+@media (max-width: 768px) {
+  .navbar a {
+    display: block; /* 화면이 작을 때는 링크를 블록 단위로 표시 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    padding: 10px; /* 패딩 조정 */
+    margin: 5px; /* 마진 추가 */
+  }
+}

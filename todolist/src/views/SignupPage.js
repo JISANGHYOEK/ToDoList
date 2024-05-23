@@ -4,7 +4,7 @@ import "./SignupPage.css"; // CSS 파일 임포트
 
 const SignupPage = () => {
   return (
-    <div className="signupPageContainer">
+    <div className="SignupPageContainer">
       <Signup />
     </div>
   );
