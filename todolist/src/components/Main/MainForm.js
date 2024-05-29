@@ -14,6 +14,7 @@ const MainForm = () => {
     console.log("학번: ", studentId);
     console.log("비밀번호: ", password);
     // 여기에 서버로 로그인 정보를 보내는 등의 처리를 할 수 있습니다.
+    navigate("/todo");
   };
   // 회원가입 페이지로 이동하는 함수
   const handleSignUpButtonClick = () => {
