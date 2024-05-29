@@ -4,7 +4,7 @@ import "./GradeForm.css";
 const GradeForm = () => {
   const [courses, setCourses] = useState([]);
   const [newCourse, setNewCourse] = useState("");
-  const [newGrade, setNewGrade] = useState("");
+  const [newGrade, setNewGrade] = useState("A+");
   const [currentSemester, setCurrentSemester] = useState("1-1");
 
   const handleAddCourse = () => {
@@ -14,7 +14,7 @@ const GradeForm = () => {
         { name: newCourse, grade: newGrade, semester: currentSemester },
       ]);
       setNewCourse("");
-      setNewGrade("");
+      setNewGrade("A+");
     }
   };
 
@@ -80,13 +80,20 @@ const GradeForm = () => {
           value={newCourse}
           onChange={(e) => setNewCourse(e.target.value)}
         />
-        <input
-          type="text"
-          className="input"
-          placeholder="성적"
+        <select
+          className="select"
           value={newGrade}
           onChange={(e) => setNewGrade(e.target.value)}
-        />
+        >
+          <option value="A+">A+</option>
+          <option value="A">A</option>
+          <option value="B+">B+</option>
+          <option value="B">B</option>
+          <option value="C+">C+</option>
+          <option value="C">C</option>
+          <option value="F">F</option>
+          <option value="P">P</option>
+        </select>
         <button className="button" onClick={handleAddCourse}>
           과목 추가
         </button>
