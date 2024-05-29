@@ -1,29 +1,51 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate 임포트
+import { useNavigate } from "react-router-dom";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase"; // Firebase Firestore 연동 파일
 import "./WithdrawForm.css";
 
 const WithdrawForm = () => {
+  const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
 
-  const handleWithdraw = (event) => {
+  const handleWithdraw = async (event) => {
     event.preventDefault();
 
-    // 회원탈퇴 로직 처리
-    console.log("Password: ", password);
-    // 여기에 서버로 회원탈퇴 요청을 보내는 등의 처리를 할 수 있습니다.
-
-    // 회원탈퇴 처리가 성공적으로 완료되었다고 가정하고, alert을 사용하여 알림을 주고 홈페이지로 이동시킵니다.
-    alert("회원탈퇴가 완료되었습니다.");
-    navigate("/"); // 홈 페이지로 이동
+    try {
+      // 사용자가 입력한 학번으로 해당 사용자의 정보를 가져옵니다.
+      const userRef = doc(db, "users", studentId);
+      const userSnap = await getDoc(userRef);
+      
+      // 사용자가 존재하고, 입력한 비밀번호가 일치할 때에만 삭제 작업을 수행합니다.
+      if (userSnap.exists() && userSnap.data().password === password) {
+        await deleteDoc(userRef); // 사용자 삭제
+        alert("회원탈퇴가 완료되었습니다.");
+        navigate("/");
+      } else {
+        alert("학번 또는 비밀번호가 올바르지 않습니다.");
+      }
+    } catch (error) {
+      console.error("회원탈퇴 오류:", error);
+    }
   };
 
   return (
     <div className="withdrawContainer">
       <h2>회원탈퇴</h2>
       <p>정말로 회원을 탈퇴하겠습니까?</p>
-      <p>탈퇴하시려면 비밀번호를 입력하세요.</p>
+      <p>탈퇴하시려면 학번과 비밀번호를 입력하세요.</p>
       <form onSubmit={handleWithdraw}>
+        <div>
+          <input
+            type="text"
+            id="studentId"
+            name="studentId"
+            value={studentId}
+            onChange={(e) => setStudentId(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <input
             type="password"

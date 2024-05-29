@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./SignupForm.css";
 
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase"; // Firebase Firestore 연동 파일
+
 const SignupForm = () => {
   // 상태(state)를 사용하여 입력 필드의 값을 저장
   const [userInfo, setUserInfo] = useState({
@@ -10,10 +13,6 @@ const SignupForm = () => {
     password: "",
   });
 
-  const [verificationCode, setVerificationCode] = useState(""); // 인증 코드
-  const [isEmailSent, setIsEmailSent] = useState(false); // 이메일 전송 여부
-  const [isVerified, setIsVerified] = useState(false); // 이메일 인증 여부
-  const [isCodeCorrect, setIsCodeCorrect] = useState(null); // 인증 코드 정확성
   const [isAgreed, setIsAgreed] = useState(false); //약관 동의 체크박스 상태
 
   // 입력 필드가 변경될 때마다 해당 상태를 업데이트하는 함수
@@ -31,33 +30,6 @@ const SignupForm = () => {
       emailPrefix: e.target.value,
     });
   };
-  // 이메일 보내는 함수
-  const sendEmail = () => {
-    // 이메일 전송 로직 (예시)
-    console.log("이메일 전송 로직 실행");
-    setIsEmailSent(true); // 가정: 이메일이 성공적으로 전송됨
-  };
-
-  // 인증 코드 입력 처리
-  const handleCodeChange = (e) => {
-    const code = e.target.value.replace(/[^A-Za-z0-9]/g, "");
-    setVerificationCode(code);
-  };
-
-  // 이메일 인증 확인
-  const verifyEmailCode = () => {
-    // 가정: 'hello1'이 올바른 코드
-    if (verificationCode === "hello1") {
-      setIsVerified(true);
-      setIsCodeCorrect(true);
-      alert("인증에 성공하였습니다."); // 인증 성공 알림
-    } else {
-      setIsVerified(false);
-      setIsCodeCorrect(false);
-      setVerificationCode(""); // 인증 코드 초기화
-      alert("인증 코드가 잘못되었습니다."); // 인증 실패 알림
-    }
-  };
 
   // 약관 동의 체크박스 변경 처리 함수
   const handleAgreementChange = (e) => {
@@ -65,14 +37,25 @@ const SignupForm = () => {
   };
 
   // 폼 제출 시 실행될 함수
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isVerified || !isAgreed) {
-      alert("이메일 인증과 약관 동의를 완료해주세요.");
+    if (!isAgreed) {
+      alert("약관 동의를 완료해주세요.");
       return;
     }
     console.log(userInfo);
-    // 서버로 데이터 전송 로직 추가 위치
+    // 회원 정보를 Firestore에 저장
+    try {
+      await setDoc(doc(db, "users", userInfo.username), {
+        ...userInfo,
+        createdAt: new Date(),
+      });
+      // 회원가입 성공 시 로그인 화면으로 이동
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -110,32 +93,8 @@ const SignupForm = () => {
             value={userInfo.emailPrefix}
             onChange={handleChangeEmailPrefix}
           />
-          <span>@syuin.ac.kr</span>
-          <div>
-            {!isEmailSent && (
-              <button type="button" onClick={sendEmail} style={{}}>
-                인증 이메일 전송
-              </button>
-            )}
-          </div>
+          <span>@suyin.ac.kr</span>
         </div>
-        {isEmailSent && !isVerified && (
-          <div>
-            <label>인증 코드:</label>
-            <input
-              type="text"
-              value={verificationCode}
-              onChange={handleCodeChange}
-            />
-            <button
-              type="button"
-              onClick={verifyEmailCode}
-              style={{ marginLeft: 10 }}
-            >
-              인증하기
-            </button>
-          </div>
-        )}
         <div>
           <label htmlFor="password">비밀번호:</label>
           <input
@@ -147,7 +106,6 @@ const SignupForm = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">가입하기</button>
         <div className="agree">
           <label className="text1">
             계정을 만들고 사용 약관 및 개인 정보 보호 정책에 동의합니다.
