@@ -1,13 +1,14 @@
 import React from "react";
-import GradeForm from "./GradeForm";
 import Navbar from "../Nav/Nav";
-const Grade = () => {
+import MyForm from "./MyForm";
+
+const My = () => {
   return (
     <div>
       <Navbar />
-      <GradeForm />
+      <MyForm />
     </div>
   );
 };
 
-export default Grade;
+export default My;

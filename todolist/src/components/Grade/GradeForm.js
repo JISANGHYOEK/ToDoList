@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import "./GradeForm.css";
 
 const GradeForm = () => {
   const [courses, setCourses] = useState([]);
@@ -58,14 +58,20 @@ const GradeForm = () => {
     <div className="form-container">
       <h2>성적 관리</h2>
       <div className="form-group">
-        <label htmlFor="semester">학기:</label>
         <select
           id="semester"
           className="select"
           value={currentSemester}
           onChange={(e) => setCurrentSemester(e.target.value)}
         >
-          {/* 기존 옵션 코드 */}
+          <option value="1-1">1학년 1학기</option>
+          <option value="1-2">1학년 2학기</option>
+          <option value="2-1">2학년 1학기</option>
+          <option value="2-2">2학년 2학기</option>
+          <option value="3-1">3학년 1학기</option>
+          <option value="3-2">3학년 2학기</option>
+          <option value="4-1">4학년 1학기</option>
+          <option value="4-2">4학년 2학기</option>
         </select>
         <input
           type="text"
@@ -95,21 +101,23 @@ const GradeForm = () => {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, index) => (
-            <tr key={index}>
-              <td>{course.name}</td>
-              <td>{course.grade}</td>
-              <td>{course.semester}</td>
-              <td>
-                <button
-                  className="button"
-                  onClick={() => handleRemoveCourse(index)}
-                >
-                  삭제
-                </button>
-              </td>
-            </tr>
-          ))}
+          {courses
+            .filter((course) => course.semester === currentSemester)
+            .map((course, index) => (
+              <tr key={index}>
+                <td>{course.name}</td>
+                <td>{course.grade}</td>
+                <td>{course.semester}</td>
+                <td>
+                  <button
+                    className="button"
+                    onClick={() => handleRemoveCourse(index)}
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <div>
