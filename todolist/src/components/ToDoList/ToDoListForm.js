@@ -5,7 +5,8 @@ import styled from "styled-components";
 import "react-calendar/dist/Calendar.css";
 import "./ToDoListForm.css";
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase"; // Firebase Firestore 연동 파일
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../firebase"; // Firebase 연동 파일
 
 const StyledCalendarWrapper = styled.div`
   padding: 10px;
@@ -76,24 +77,34 @@ const DeleteButton = styled.button`
 const ToDoListForm = () => {
   const [date, setDate] = useState(new Date());
   const [toDoList, setToDoList] = useState({});
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // 날짜 변경 시 Firestore에서 해당 날짜의 할 일 목록을 불러옴
-    const fetchData = async () => {
-      const dateString = moment(date).format("YYYY-MM-DD");
-      const docRef = doc(db, "todos", dateString);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setToDoList({ [dateString]: docSnap.data().items });
-      } else {
-        setToDoList({});
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+        fetchData(user.uid, date);
       }
-    };
-    fetchData();
+    });
+    return () => unsubscribe();
   }, [date]);
+
+  const fetchData = async (userId, date) => {
+    const dateString = moment(date).format("YYYY-MM-DD");
+    const docRef = doc(db, "users", userId, "todos", dateString);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setToDoList({ [dateString]: docSnap.data().items });
+    } else {
+      setToDoList({});
+    }
+  };
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
+    if (userId) {
+      fetchData(userId, newDate);
+    }
   };
 
   const handleAddToDo = async () => {
@@ -104,14 +115,14 @@ const ToDoListForm = () => {
         const newDateList = prevToDoList[dateString]
           ? [...prevToDoList[dateString], newToDo]
           : [newToDo];
-          saveToDoToFirestore(dateString, newDateList); // Firestore에 저장
+        saveToDoToFirestore(userId, dateString, newDateList); // Firestore에 저장
         return { ...prevToDoList, [dateString]: newDateList };
       });
     }
   };
 
-  const saveToDoToFirestore = async (dateString, newDateList) => {
-    const docRef = doc(db, "todos", dateString);
+  const saveToDoToFirestore = async (userId, dateString, newDateList) => {
+    const docRef = doc(db, "users", userId, "todos", dateString);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -129,12 +140,10 @@ const ToDoListForm = () => {
     const dateString = moment(date).format("YYYY-MM-DD");
     setToDoList((prevToDoList) => {
       const updatedToDoList = prevToDoList[dateString].filter((_, i) => i !== index);
-      saveToDoToFirestore(dateString, updatedToDoList); // Firestore에 업데이트
+      saveToDoToFirestore(userId, dateString, updatedToDoList); // Firestore에 업데이트
       return { ...prevToDoList, [dateString]: updatedToDoList };
     });
   };
-
-      
 
   const dateString = moment(date).format("YYYY-MM-DD");
   const toDosForSelectedDate = toDoList[dateString] || [];
@@ -158,7 +167,7 @@ const ToDoListForm = () => {
       <ToDoListWrapper>
         <h3>{moment(date).format("YYYY-MM-DD")}의 할 일</h3>
         <ul>
-        {toDosForSelectedDate.map((toDo, index) => (
+          {toDosForSelectedDate.map((toDo, index) => (
             <ToDoItem key={index}>
               {toDo}
               <DeleteButton onClick={() => handleDeleteToDo(index)}>삭제</DeleteButton>

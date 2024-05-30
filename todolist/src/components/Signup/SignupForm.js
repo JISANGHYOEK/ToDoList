@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./SignupForm.css";
-
+import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../firebase"; // Firebase Firestore 연동 파일
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase"; // Firebase 연동 파일
 
 const SignupForm = () => {
   // 상태(state)를 사용하여 입력 필드의 값을 저장
@@ -23,6 +24,7 @@ const SignupForm = () => {
       [name]: value,
     });
   };
+
   // 이메일의 @ 앞부분만 처리하는 handleChangeEmailPrefix 함수 추가
   const handleChangeEmailPrefix = (e) => {
     setUserInfo({
@@ -43,20 +45,38 @@ const SignupForm = () => {
       alert("약관 동의를 완료해주세요.");
       return;
     }
-    console.log(userInfo);
-    // 회원 정보를 Firestore에 저장
+
     try {
-      await setDoc(doc(db, "users", userInfo.username), {
-        ...userInfo,
+      // Firebase Authentication을 사용하여 사용자 생성
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        `${userInfo.emailPrefix}@suyin.ac.kr`, // 학교 이메일 형식으로 사용자 이메일 생성
+        userInfo.password
+      );
+
+      // Firestore에 사용자 정보 저장
+      await setDoc(doc(db, "users", user.uid), {
+        username: userInfo.username,
+        studentId: userInfo.studentId,
+        email: `${userInfo.emailPrefix}@suyin.ac.kr`,
+        password: userInfo.password, // 학교 이메일 형식으로 저장
         createdAt: new Date(),
       });
-      // 회원가입 성공 시 로그인 화면으로 이동
-      window.location.href = "/";
+
+      // 회원가입 성공 시 메시지 표시
+      alert("회원가입이 완료되었습니다.");
     } catch (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error signing up:", error);
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
     }
   };
+
+  const navigate = useNavigate();
+  // 회원가입 페이지로 이동하는 함수
+  const handleSignUpButtonClick = () => {
+    navigate("/"); // '/'으로 이동
+  };
+
 
   return (
     <div>
@@ -79,7 +99,7 @@ const SignupForm = () => {
             type="text"
             id="studentId"
             name="studentId"
-            value={userInfo.userid}
+            value={userInfo.studentId}
             onChange={handleChange}
           />
         </div>
@@ -127,6 +147,15 @@ const SignupForm = () => {
             }}
           >
             가입하기
+          </button>
+        </div>     
+        <div>
+          <button
+            type="button"
+            className="button"
+            onClick={handleSignUpButtonClick}
+          >
+            로그인하기
           </button>
         </div>
       </form>

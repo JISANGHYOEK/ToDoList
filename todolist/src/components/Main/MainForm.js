@@ -1,37 +1,53 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainForm.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 const MainForm = () => {
-  // 상태 관리를 위한 useState 훅 사용
-  const [studentId, setStudentId] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // 폼 제출 시 페이지 리로드 방지
-    // 로그인 로직 처리
-    console.log("학번: ", studentId);
-    console.log("비밀번호: ", password);
-    // 여기에 서버로 로그인 정보를 보내는 등의 처리를 할 수 있습니다.
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      // Firebase Authentication을 사용하여 로그인 시도
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Firestore에서 사용자 정보 가져오기
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        console.log("로그인 성공", userDoc.data());
+        navigate("/todo"); // 로그인 성공 시 '/todo' 페이지로 이동
+      } else {
+        console.error("사용자 정보가 Firestore에 존재하지 않습니다.");
+      }
+    } catch (error) {
+      console.error("로그인 실패", error.message);
+      alert(`로그인에 실패했습니다: ${error.message}`);
+    }
   };
-  // 회원가입 페이지로 이동하는 함수
+
   const handleSignUpButtonClick = () => {
-    navigate("/signup"); // '/signup'으로 이동
+    navigate("/signup");
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="studentId">학번</label>
+          <label htmlFor="email">이메일</label>
           <input
             className="Minput-form"
-            type="text"
-            id="studentId"
-            name="studentId"
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
+            type="email"
+            id="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
