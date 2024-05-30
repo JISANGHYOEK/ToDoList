@@ -10,6 +10,7 @@ const MainForm = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -30,6 +31,15 @@ const MainForm = () => {
       console.error("로그인 실패", error.message);
       alert(`로그인에 실패했습니다: ${error.message}`);
     }
+=======
+  const handleSubmit = (event) => {
+    event.preventDefault(); // 폼 제출 시 페이지 리로드 방지
+    // 로그인 로직 처리
+    console.log("학번: ", studentId);
+    console.log("비밀번호: ", password);
+    // 여기에 서버로 로그인 정보를 보내는 등의 처리를 할 수 있습니다.
+    navigate("/todo");
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
   };
 
   const handleSignUpButtonClick = () => {

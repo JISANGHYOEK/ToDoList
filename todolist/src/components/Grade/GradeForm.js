@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import "./GradeForm.css";
 import { db, auth } from "../firebase"; // Firebase 연동 파일
 import { setDoc, doc, getDocs, collection, deleteDoc, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+=======
+import React, { useState } from "react";
+import "./GradeForm.css";
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
 
 const GradeForm = () => {
   const [courses, setCourses] = useState([]);
   const [newCourse, setNewCourse] = useState("");
   const [newGrade, setNewGrade] = useState("A+");
   const [currentSemester, setCurrentSemester] = useState("1-1");
+<<<<<<< HEAD
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
@@ -64,6 +70,24 @@ const GradeForm = () => {
     } catch (error) {
       console.error("Error removing course:", error);
     }
+=======
+
+  const handleAddCourse = () => {
+    if (newCourse.trim() !== "" && isValidGrade(newGrade)) {
+      setCourses([
+        ...courses,
+        { name: newCourse, grade: newGrade, semester: currentSemester },
+      ]);
+      setNewCourse("");
+      setNewGrade("A+");
+    }
+  };
+
+  const handleRemoveCourse = (index) => {
+    const updatedCourses = [...courses];
+    updatedCourses.splice(index, 1);
+    setCourses(updatedCourses);
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
   };
 
   const calculateAverage = (semester) => {
@@ -160,7 +184,11 @@ const GradeForm = () => {
                 <td>
                   <button
                     className="button"
+<<<<<<< HEAD
                     onClick={() => handleRemoveCourse(course.name)}
+=======
+                    onClick={() => handleRemoveCourse(index)}
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
                   >
                     삭제
                   </button>

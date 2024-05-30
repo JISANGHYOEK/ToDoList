@@ -10,4 +10,8 @@ const Grade = () => {
   );
 };
 
+<<<<<<< HEAD
 export default Grade;
+=======
+export default Grade;
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c

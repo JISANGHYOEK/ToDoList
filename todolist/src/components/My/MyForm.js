@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import "./MyForm.css";
 import { useNavigate } from "react-router-dom";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Firebase Firestore 및 Authentication 연동 파일
+=======
+import React, { useState } from "react";
+import "./MyForm.css";
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
 
 const MyForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
+<<<<<<< HEAD
   const navigate = useNavigate(); // useNavigate 잘못 가져왔던 부분 수정
   useEffect(() => {
     // 현재 로그인한 사용자의 정보를 가져오는 함수
@@ -65,6 +71,14 @@ const MyForm = () => {
 
   const handleWithdrawPageButtonClick = () => {
     navigate("/withdraw"); // Withdraw 페이지로 이동
+=======
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // 여기에 사용자 정보 저장 로직 추가
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Phone:", phone);
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
   };
 
   return (
@@ -111,6 +125,7 @@ const MyForm = () => {
           저장
         </button>
       </form>
+<<<<<<< HEAD
       <div>
         <button
           type="button"
@@ -127,8 +142,14 @@ const MyForm = () => {
           로그아웃
         </button>
       </div>
+=======
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default MyForm;
+=======
+export default MyForm;
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c

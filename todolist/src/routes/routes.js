@@ -1,5 +1,6 @@
 import GradePage from "../views/GradePage";
 import MainPage from "../views/MainPage";
+import MyPage from "../views/MyPage";
 import SignupPage from "../views/SignupPage";
 import MyPage from "../views/MyPage";
 import ToDoListPage from "../views/ToDoListPage";
@@ -35,6 +36,14 @@ const routes = [
   {
     path: "/schedule",
     element: <SchedulePage/>,
+  },
+  {
+    path: "/grade",
+    element: <GradePage />,
+  },
+  {
+    path: "/my",
+    element: <MyPage />,
   },
 ];
 

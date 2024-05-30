@@ -10,4 +10,8 @@ const GradePage = () => {
   );
 };
 
+<<<<<<< HEAD
 export default GradePage;
+=======
+export default GradePage;
+>>>>>>> 8fc60e61ad3d00226af5681c291739d88c859e3c
