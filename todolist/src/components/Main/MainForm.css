@@ -1,0 +1,37 @@
+.Minput-form {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  width: calc(100% - 30px);
+}
+
+.Minput-form:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.signup-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #357abd;
+}

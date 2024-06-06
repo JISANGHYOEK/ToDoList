@@ -1,0 +1,67 @@
+.withdrawContainer {
+  padding: 20px;
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.withdrawContainer input,
+.withdrawContainer button {
+  width: 90%; /* 모바일 환경을 고려하여 너비를 %로 설정 */
+  padding: 10px;
+  margin-top: 10px; /* 입력 필드와 버튼 사이의 간격 */
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: none;
+}
+
+.withdraw-button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.withdraw-button:hover {
+  background-color: #4a90e2;
+}
+
+/* 태블릿 및 데스크탑을 위한 미디어 쿼리 */
+@media (min-width: 768px) {
+  .withdrawContainer {
+    max-width: 600px; /* 컨테이너의 최대 너비를 조정 */
+  }
+
+  .withdrawContainer input,
+  .withdrawContainer button {
+    width: 80%; /* 너비 조정 */
+    padding: 10px; /* 패딩 조정 */
+    border-radius: 12px;
+    border: none;
+  }
+
+  .withdrawContainer h2,
+  .withdrawContainer p {
+    font-size: 1.1rem; /* 폰트 사이즈 조정 */
+  }
+}
+
+/* 데스크탑 환경을 위한 미디어 쿼리 */
+@media (min-width: 1024px) {
+  .withdrawContainer {
+    max-width: 800px;
+  }
+
+  .withdrawContainer input,
+  .withdrawContainer button {
+    width: 90%;
+    padding: 10px;
+    border: none;
+  }
+
+  .withdrawContainer h2,
+  .withdrawContainer p {
+    font-size: 1rem;
+  }
+}
